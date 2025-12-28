@@ -1,0 +1,77 @@
+.TH PACSAT-LIST 1 "December 27, 2025" "1.0.0" "PACSAT Revival Project"
+.SH NAME
+pacsat-list \- List files available on PACSAT ground station via REST API
+.SH SYNOPSIS
+.B curl
+http://localhost:8000/files
+.br
+\-H "Authorization: Bearer <token>"
+.SH DESCRIPTION
+.B pacsat-list
+is a command-line example for retrieving the file directory from the PACSAT ground station using the REST API.
+The endpoint returns a paginated, sortable, and filterable list of files with metadata.
+.SH OPTIONS
+.TP
+.B \-H "Authorization: Bearer <token>"
+JWT authentication token obtained from /token endpoint
+.TP
+.B ?offset=N
+Pagination offset (default 0)
+.TP
+.B ?limit=N
+Number of files per page (default 100, max 1000)
+.TP
+.B ?sort=VALUE
+Sort order: newest (default), oldest, largest, smallest, filename, callsign
+.TP
+.B ?callsign=VALUE
+Filter by uploader callsign (contains, case-insensitive)
+.TP
+.B ?filename=VALUE
+Filter by filename pattern (contains, case-insensitive)
+.TP
+.B ?min_size=N
+Minimum file size in bytes
+.TP
+.B ?max_size=N
+Maximum file size in bytes
+.SH EXAMPLES
+.TP
+Default listing (newest first, 100 files)
+    curl -H "Authorization: Bearer $TOKEN" \\
+         http://localhost:8000/files
+.TP
+Paginated, sorted by largest
+    curl -H "Authorization: Bearer $TOKEN" \\
+         "http://localhost:8000/files?offset=0&limit=20&sort=largest"
+.TP
+Filter by callsign
+    curl -H "Authorization: Bearer $TOKEN" \\
+         "http://localhost:8000/files?callsign=G0K8KA"
+.TP
+Search filename
+    curl -H "Authorization: Bearer $TOKEN" \\
+         "http://localhost:8000/files?filename=news"
+.TP
+Legacy text directory
+    curl -H "Authorization: Bearer $TOKEN" \\
+         http://localhost:8000/directory
+.SH RESPONSE
+Returns JSON with:
+- files[] array of file objects (file_num, filename, callsign, size, upload_time, age_days)
+- total, offset, limit, query_time_ms
+.SH AUTHENTICATION
+First obtain token:
+    curl -X POST "http://localhost:8000/token" \\
+         -d "username=youruser&password=yourpass"
+.SH SEE ALSO
+.BR pacsat-groundstation (1),
+.BR pacsat-upload (1),
+.BR pacsat-download (1),
+.BR curl (1)
+.SH AUTHOR
+PACSAT Revival Project
+.SH COPYRIGHT
+Copyright (C) 2025-2026 Kris Kirby, KE4AHR
+.br
+This tool uses the PACSAT ground station licensed under GNU General Public License v3.0.

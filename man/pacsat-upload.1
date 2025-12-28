@@ -1,0 +1,57 @@
+.TH PACSAT-UPLOAD 1 "December 27, 2025" "1.0.0" "PACSAT Revival Project"
+.SH NAME
+pacsat-upload \- Upload files to PACSAT ground station via REST API
+.SH SYNOPSIS
+.B curl
+\-X POST http://localhost:8000/upload
+.br
+\-H "Authorization: Bearer <token>"
+.br
+\-F "file=@/path/to/file"
+.SH DESCRIPTION
+.B pacsat-upload
+is a command-line example for uploading files to the PACSAT ground station using the REST API.
+The ground station accepts files via multipart/form-data and generates authentic PACSAT File Headers (PFH).
+Uploaded files are stored in the conventional subdirectory hierarchy and become available for broadcast.
+.SH OPTIONS
+.TP
+.B \-X POST
+Use HTTP POST method
+.TP
+.B \-H "Authorization: Bearer <token>"
+JWT authentication token obtained from /token endpoint
+.TP
+.B \-F "file=@/path/to/file"
+Local file to upload (multiple \-F for batch)
+.TP
+.B \-F "file=@file1" \-F "file=@file2"
+Batch upload (use /upload/batch endpoint)
+.SH EXAMPLES
+.TP
+Single file upload
+    curl -X POST "http://localhost:8000/upload" \\
+         -H "Authorization: Bearer $TOKEN" \\
+         -F "file=@news.txt"
+.TP
+Batch upload
+    curl -X POST "http://localhost:8000/upload/batch" \\
+         -H "Authorization: Bearer $TOKEN" \\
+         -F "file=@file1.txt" \\
+         -F "file=@file2.bin"
+.SH RESPONSE
+On success, returns JSON with file_num, filename (8.3 format), size, and upload time.
+.SH AUTHENTICATION
+First obtain token:
+    curl -X POST "http://localhost:8000/token" \\
+         -d "username=youruser&password=yourpass"
+.SH SEE ALSO
+.BR pacsat-groundstation (1),
+.BR pacsat-download (1),
+.BR pacsat-list (1),
+.BR curl (1)
+.SH AUTHOR
+PACSAT Revival Project
+.SH COPYRIGHT
+Copyright (C) 2025-2026 Kris Kirby, KE4AHR
+.br
+This tool uses the PACSAT ground station licensed under GNU General Public License v3.0.

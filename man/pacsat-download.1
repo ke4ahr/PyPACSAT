@@ -1,0 +1,63 @@
+.TH PACSAT-DOWNLOAD 1 "December 27, 2025" "1.0.0" "PACSAT Revival Project"
+.SH NAME
+pacsat-download \- Download files from PACSAT ground station via REST API
+.SH SYNOPSIS
+.B curl
+\-OJ http://localhost:8000/download/\fIfile_num\fR
+.br
+\-H "Authorization: Bearer <token>"
+.SH DESCRIPTION
+.B pacsat-download
+is a command-line example for downloading files from the PACSAT ground station using the REST API.
+Files are served with original PFH-derived filenames and support HTTP Range requests for resumable downloads.
+.SH OPTIONS
+.TP
+.B \-O
+Save file with server-provided filename (Content-Disposition)
+.TP
+.B \-J
+Use remote file name (combined with \-O)
+.TP
+.B \-H "Authorization: Bearer <token>"
+JWT authentication token obtained from /token endpoint
+.TP
+.B \-H "Range: bytes=start-end"
+Request partial content for resumable download
+.TP
+.B /raw
+Append /raw to URL for raw stored file (PFH + body) as .bin
+.SH EXAMPLES
+.TP
+Download reconstructed file (original name)
+    curl -OJ -H "Authorization: Bearer $TOKEN" \\
+         http://localhost:8000/download/1001
+.TP
+Download raw stored file
+    curl -OJ -H "Authorization: Bearer $TOKEN" \\
+         http://localhost:8000/download/1001/raw
+.TP
+Partial/resumable download (first 1MB)
+    curl -H "Authorization: Bearer $TOKEN" \\
+         -H "Range: bytes=0-1048575" \\
+         -o partial.bin http://localhost:8000/download/1001
+.SH RESPONSE
+On success, returns file content with:
+- Content-Disposition: attachment; filename="original_name.ext"
+- Content-Length
+- Accept-Ranges: bytes
+- 206 Partial Content for Range requests
+.SH AUTHENTICATION
+First obtain token:
+    curl -X POST "http://localhost:8000/token" \\
+         -d "username=youruser&password=yourpass"
+.SH SEE ALSO
+.BR pacsat-groundstation (1),
+.BR pacsat-upload (1),
+.BR pacsat-list (1),
+.BR curl (1)
+.SH AUTHOR
+PACSAT Revival Project
+.SH COPYRIGHT
+Copyright (C) 2025-2026 Kris Kirby, KE4AHR
+.br
+This tool uses the PACSAT ground station licensed under GNU General Public License v3.0.

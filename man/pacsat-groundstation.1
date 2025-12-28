@@ -1,0 +1,60 @@
+.TH PACSAT-GROUNDSTATION 1 "December 27, 2025" "1.0.0" "PACSAT Revival Project"
+.SH NAME
+pacsat-groundstation \- Modern PACSAT satellite ground station
+.SH SYNOPSIS
+.B pacsat-groundstation
+.RB [ \-c
+.IR config ]
+.RB [ \-p
+.IR port ]
+.RB [ \-h ]
+.SH DESCRIPTION
+.B pacsat-groundstation
+is a complete, open-source ground station for PACSAT store-and-forward amateur radio satellites.
+It implements the full PACSAT protocol suite including FTL0 file transfer, broadcast directory, and file storage.
+The system provides a FastAPI REST interface for file management and radio integration via KISS/XKISS or AGWPE TCP.
+.SH OPTIONS
+.TP
+.BR \-c,\ \-\-config\  \fIfile\fR
+Path to configuration file (YAML format). Default: config.yaml in current directory.
+.TP
+.BR \-p,\ \-\-port\  \fIport\fR
+HTTP port for the REST API server. Default: 8000.
+.TP
+.BR \-h,\ \-\-help
+Show help message and exit.
+.SH CONFIGURATION
+The configuration file (config.yaml) controls callsign, storage, radio interface, and scheduling.
+See the project README for full configuration options.
+.SH REST API
+The built-in REST API provides:
+- File upload/download
+- Directory listing and search
+- Authentication (JWT)
+- Statistics and telemetry
+Access at http://localhost:8000 with OpenAPI docs at /docs
+.SH FILES
+.TP
+.I pacsat_files/
+Default storage directory with subdirectory hierarchy
+.TP
+.I pacsat.db
+SQLite database for file index and metadata
+.TP
+.I config.yaml
+Configuration file
+.SH ENVIRONMENT
+No special environment variables required.
+.SH SEE ALSO
+.BR pacsat-upload (1),
+.BR pacsat-download (1),
+.BR pacsat-list (1),
+.BR fastapi (1)
+.SH AUTHOR
+PACSAT Revival Project
+.SH COPYRIGHT
+Copyright (C) 2025-2026 Kris Kirby, KE4AHR
+.br
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.
+.br
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.

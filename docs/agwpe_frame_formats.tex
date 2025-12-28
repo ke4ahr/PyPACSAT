@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{inconsolata}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+}
+
+\title{AGWPE Frame Formats (Updated for Current Implementation)}
+\author{Kris Kirby, KE4AHR}
+\date{December 27, 2025}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AGWPE Frame Formats}
+\lhead{PACSAT Revival Project}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview}
+
+The AGW Packet Engine (AGWPE) TCP/IP API uses a fixed \textbf{36-byte header} followed by a variable-length data payload. All frames share the same header structure, with the meaning determined by the \texttt{DataKind} byte.
+
+The current Python implementation supports unproto UI frames (primary for PACSAT), connected mode, raw unproto, and outstanding frame queries.
+
+\section{Universal Frame Header (36 bytes)}
+
+\begin{longtable}{>{\raggedleft\arraybackslash}p{2cm} p{1.5cm} p{4cm} p{8cm}}
+\toprule
+\textbf{Offset} & \textbf{Size} & \textbf{Field} & \textbf{Description} \\
+\midrule
+\endhead
+0 & 1 byte & Port & Radio port number (0--255). Port 0 is special (general commands). \\
+1--3 & 3 bytes & Reserved & Always 0x00. \\
+4 & 4 bytes & DataKind & Frame type (single ASCII character, e.g., `R', `G', `X', `M', `D', `K', `Y', `C', `c', `d', `D'). Little-endian. \\
+8 & 10 bytes & CallFrom & Source callsign, left-justified, space-padded (max 9 characters + space padding). \\
+18 & 10 bytes & CallTo & Destination callsign, same format as CallFrom. \\
+28 & 4 bytes & DataLen & Length of payload data (little-endian 32-bit integer). \\
+32 & 4 bytes & Reserved & Always 0x00. \\
+\bottomrule
+\caption{AGWPE Universal Frame Header}
+\end{longtable}
+
+\textbf{Payload}: Immediately follows the header, length = DataLen bytes.
+
+\section{Implemented Frame Types}
+
+\begin{longtable}{l l l p{8cm}}
+\toprule
+\textbf{DataKind} & \textbf{Name} & \textbf{Direction} & \textbf{Status / Notes} \\
+\midrule
+\endhead
+`R' & Register & Client $\to$ Server & Implemented – Required at startup \\
+`G' & Version & Both & Implemented – Version query/response \\
+`X' & Ports & Both & Implemented – Port capabilities \\
+`M' & Monitor & Client $\to$ Server & Implemented – Enable monitoring \\
+`D' & Unproto Data & Both & Fully implemented – Primary for PACSAT (PID in payload) \\
+`K' & Raw Unproto & Client $\to$ Server & Implemented – No PID byte \\
+`Y' & Outstanding Frames & Both & Implemented – Query pending frames \\
+`C' & Connect (SABM) & Client $\to$ Server & Implemented – Connected mode support \\
+`c' & Confirm (UA) & Server $\to$ Client & Implemented \\
+`d' & Connected Data & Both & Implemented – I-frames \\
+`D' & Disconnect (DISC) & Both & Implemented \\
+\bottomrule
+\caption{Implemented AGWPE Frame Types}
+\end{longtable}
+
+\section{Key Implementation Notes}
+
+- **Unproto ('D')**: Primary mode for PACSAT – payload = PID byte + Info field
+- **Connected Mode**: Fully supported but disabled by default (PACSAT uses unproto only)
+- **Raw ('K')**: Allows sending frames without PID byte
+- **Multiple Applications**: Not supported (single application only – FIXME present in code)
+- **Monitoring**: 'M' frame enables reception of all traffic on a port
+
+\section{References}
+
+- AGWPE TCP/IP API Tutorial by Pedro E. Colla (LU7DID) and George Rossopoulos (SV2AGW), 2000
+- Current implementation in PyAGW3/agwpe.py (PACSAT Revival Project, 2025)
+
+\end{document}

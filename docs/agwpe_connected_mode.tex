@@ -1,0 +1,101 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{inconsolata}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+}
+
+\title{Connected Mode Frames in AGWPE (Current Implementation)}
+\author{Kris Kirby, KE4AHR}
+\date{December 27, 2025}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AGWPE Connected Mode}
+\lhead{PACSAT Revival Project}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Connected mode in AGWPE provides AX.25 connected sessions (SABM/UA/I-frame/DISC). Although PACSAT satellites used only unproto UI frames, the current implementation fully supports connected mode for compatibility with legacy applications.
+
+\section{Connected Mode Frame Types}
+
+\begin{longtable}{l l l p{8cm}}
+\toprule
+\textbf{DataKind} & \textbf{Direction} & \textbf{Purpose} & \textbf{Status} \\
+\midrule
+\endhead
+`C' & Client $\to$ Server & Request connection (SABM) & Fully implemented \\
+`c' & Server $\to$ Client & Connection confirm (UA) & Fully implemented \\
+`d' & Both & Connected mode data (I-frame) & Fully implemented \\
+`D' & Both & Disconnect request (DISC) & Fully implemented \\
+\bottomrule
+\caption{Connected Mode Frame Types}
+\end{longtable}
+
+\section{Implementation Details}
+
+- **State Machine**: DISCONNECTED → CONNECTING → CONNECTED → DISCONNECTING
+- **Session Tracking**: Per (remote_callsign, port) key
+- **Sequence Numbers**: V(R) and V(S) for I-frames (modulo 8)
+- **Callbacks**: on_connected_data for received I-frame payload
+- **Enabled**: Optional – disabled by default (PACSAT uses unproto only)
+
+\section{Example Flow}
+
+\textbf{Client initiates connection:}
+\begin{lstlisting}
+DataKind: 'C'
+CallFrom: "G0K8KA-0  "
+CallTo:   "TARGET-1  "
+DataLen:  0
+\end{lstlisting}
+
+\textbf{Server responds:}
+\begin{lstlisting}
+DataKind: 'c'
+CallFrom: "TARGET-1  "
+CallTo:   "G0K8KA-0  "
+DataLen:  0
+\end{lstlisting}
+
+\textbf{Data exchange:}
+\begin{lstlisting}
+DataKind: 'd'
+Data:     [control byte] + payload
+\end{lstlisting}
+
+\section{Important Notes}
+
+- **PACSAT does NOT use connected mode** — all operations use unproto UI frames
+- Connected mode is provided for legacy compatibility
+- Current implementation is complete and tested
+
+\section{References}
+
+- AGWPE TCP/IP API Tutorial by Pedro E. Colla (LU7DID) and George Rossopoulos (SV2AGW), 2000
+- Current implementation in PyAGW3/agwpe.py and radio_connected.py (2025)
+
+\end{document}
