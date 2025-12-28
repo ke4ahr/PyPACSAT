@@ -152,15 +152,21 @@ The ground station supports multiple radio backends:
 - GPIO input/output
 - Full capabilities over REST
 
-## CAVEATS / DISCLAIMER
+## CAVEATS
+
+Caveats are included in the [DISCLAIMER](###DISCLAIMER).
+
+### DISCLAIMER
 
 - This software is not intented for use on, in, aboard and/or in connection with any space craft, celestial object, or entity for any purpose, or no purpose.
 - This software is written in an interpreted computer language. It is not written in a compiled computer language. As a result, it is not designed to be a high-performance solution. It is extremely inefficient in terms of memory and storage use. It does not have guard rails installed to prevent memory corruption, buffer overflows, general misbehavior or malfeasance.
 - The software is intended to be a complete open-source reference implementation.
 - This software is not designed to survive re-entry into the atmosphere of Earth, and/or any other ceslestial objects including objects lacking an atmosphere. 
-- The software is not certified for use at or above the speed of sound, or underwater.
+- The software is not certified for use at, below, or above the speed of sound, nor under or above water at any depth or elevation.
+- This software is not for the manufacture, use, storage, or distribution of any radioactive materials.
+- The software will not protect from nor is immune from the effects of ionizing, non-ionizing, or any other form of radiation.
 - This software may not be returned to the place of purchase in exchange for an item of equal or lesser value. 
-- The software does not provide the consumer with super-, greater-, or any lesser-powers. 
+- The software does not provide and/or confer to the consumer any sort of super-, greater-, or any lesser-powers. 
 - Do not fold, spindle, or mutilate. 
 - Do not spin, fold, or defenestrate.
 - Do not taunt Happy Fun Ball.
@@ -179,7 +185,7 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 - TNOS: KO4KS
 - Protocol documents from TAPR, AMSAT, F6FBB, and W0RLI
 - Dire Wolf developers
-- KD4FM, N4MSN, KB5AWP, N4HHE, WD4CPF
+- KD4FM, N4MSN, KB5AWP, N4HHE, WD4CPF, WA4NZD/NN4SA
 
 **73 de the PACSAT Revival Project**  
 **December 27, 2025 — The satellites live again** 🚀
