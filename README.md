@@ -1,4 +1,4 @@
-# PACSAT Ground Station
+# PyPACSAT: A Full PACSAT Server/Client in Python + Extras 
 
 **A Modern Revival of the PACSAT Store-and-Forward Satellite Protocol**
 
@@ -15,15 +15,15 @@ The system provides **full compatibility** with the original PACSAT protocol whi
 
 Key capabilities:
 - Bidirectional FTL0 file transfer (upload and download)
-- PACSAT File Header (PFH) handling with advanced optional items
 - Broadcast protocol (directory PID 0xBD, file chunks PID 0xBB)
+- AGWPE TCP and KISS/XKISS serial radio interfaces
 - Conventional file storage with k/ki/kir/kirby subdirectory hierarchy
 - Soft delete with recovery ("trash" system)
-- JWT authentication with refresh tokens and blacklist
-- FastAPI REST interface
-- AGWPE TCP and KISS/XKISS serial radio interfaces
-- Telemetry parsing
+- PACSAT File Header (PFH) handling with advanced optional items
 - Connected mode support (for legacy compatibility)
+- Telemetry parsing
+- FastAPI REST interface
+- JWT authentication with refresh tokens and blacklist
 
 The project achieves **functional parity** with 1990s PACSAT satellites and exceeds them in security and user experience.
 
@@ -32,10 +32,10 @@ The project achieves **functional parity** with 1990s PACSAT satellites and exce
 - **FTL0 Upload & Download Server** – Full hole list handling, CRC verification, chunk reassembly, error recovery
 - **Directory Broadcast** – Periodic and on-demand PFH broadcasting (PID 0xBD)
 - **File Management** – Upload (single/batch), download (with HTTP Range), listing, search, deletion (with recovery)
-- **Security** – JWT access/refresh tokens, token rotation, SQLite blacklist for secure logout, role-based access (admin/user)
-- **Radio Support** – KISS/XKISS serial, Dire Wolf TCP, AGWPE TCP
 - **Maintenance** – Async periodic tasks: blacklist cleanup, storage cleanup, beacon transmission
+- **Radio Support** – KISS/XKISS serial, Dire Wolf TCP, AGWPE TCP
 - **Telemetry** – Parsing of Whole Orbit Data (WOD) and realtime frames
+- **Security** – JWT access/refresh tokens, token rotation, SQLite blacklist for secure logout, role-based access (admin/user)
 - **Testing** – Comprehensive unit, integration, and error recovery tests
 
 ## Installation
@@ -48,12 +48,16 @@ The project achieves **functional parity** with 1990s PACSAT satellites and exce
 
 ### Quick Start
 
-    git clone https://github.com/yourusername/pacsat-ground-station.git
-    cd pacsat-ground-station
+** DOES NOT WORK AT THE MOMENT **
+
+    git clone https://github.com/ke4ahr/PyPACSAT.git
+    cd PyPACSAT
     pip install -r requirements.txt
 
     # Run the ground station
     python -m pacsat.groundstation --config config.yaml
+
+*I will probably re-work this to use a Python venv.*
 
 The REST API will be available at http://localhost:8000  
 OpenAPI docs at http://localhost:8000/docs
@@ -117,7 +121,7 @@ Full interactive documentation at `/docs` (Swagger UI) and `/redoc`.
 
 The ground station supports multiple radio backends:
 
-### KISS Serial (Hardware TNC)
+### KISS/XKISS Serial (Hardware TNC)
 
     radio:
       type: kiss_serial
@@ -138,6 +142,26 @@ The ground station supports multiple radio backends:
 
     # Run with hot reload (API only)
     uvicorn PyHamREST1.rest:app --reload --port 8000
+
+## Planned Features
+
+- FBB / RLI / Winlink Forwarding Protocol Integration from [PyFBB](https://github.com/ke4ahr/PyFBB/)
+- PhilFlag Compatibility with [rax25kb](https://github.com/ke4ahr/rax25kb/) to support some radios with built-in TNCs.
+- Web UI Configurator
+- Command Line Interface (CLI)
+- GPIO input/output
+- Full capabilities over REST
+
+## CAVEATS / DISCLAIMER
+
+- This software is not intented for use on, in, aboard and/or in connection with any space craft, celestial object, or entity for any purpose, or no purpose.
+- This software is written in an interpreted computer language. It is not written in a compiled computer language. As a result, it is not designed to be a high-performance solution. It is extremely inefficient in terms of memory and storage use. It does not have guard rails installed to prevent memory corruption, buffer overflows, general misbehavior or malfeasance.
+- The software is intended to be a complete open-source reference implementation.
+- This software is not designed to survive re-entry into the atmosphere of Earth, and/or any other ceslestial objects including objects lacking an atmosphere. 
+- The software is not certified for use at or above the speed of sound, or underwater.
+- Do not fold, spindle, or mutilate. 
+- Do not spin, fold, or defenestrate.
+- Do not taunt Happy Fun Ball.
 
 ## License
 
@@ -161,3 +185,4 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 The uplink is open. The downlink is waiting. Good DX!
 
 Copyright (C) 2025-2026 Kris Kirby, KE4AHR 
+Licensed under GPLv3.0
