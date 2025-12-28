@@ -159,6 +159,8 @@ The ground station supports multiple radio backends:
 - The software is intended to be a complete open-source reference implementation.
 - This software is not designed to survive re-entry into the atmosphere of Earth, and/or any other ceslestial objects including objects lacking an atmosphere. 
 - The software is not certified for use at or above the speed of sound, or underwater.
+- This software may not be returned to the place of purchase in exchange for an item of equal or lesser value. 
+- The software does not provide the consumer with super-, greater-, or any lesser-powers. 
 - Do not fold, spindle, or mutilate. 
 - Do not spin, fold, or defenestrate.
 - Do not taunt Happy Fun Ball.
