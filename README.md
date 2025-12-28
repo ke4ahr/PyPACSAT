@@ -161,7 +161,7 @@ Caveats are included in the [DISCLAIMER](###DISCLAIMER).
 - This software is not intented for use on, in, aboard and/or in connection with any space craft, celestial object, or entity for any purpose, or no purpose.
 - This software is written in an interpreted computer language. It is not written in a compiled computer language. As a result, it is not designed to be a high-performance solution. It is extremely inefficient in terms of memory and storage use. It does not have guard rails installed to prevent memory corruption, buffer overflows, general misbehavior or malfeasance.
 - The software is intended to be a complete open-source reference implementation.
-- This software is not designed to survive re-entry into the atmosphere of Earth, and/or any other ceslestial objects including objects lacking an atmosphere. 
+- This software is not designed to survive departure from or re-entry to the atmosphere of Earth, and/or any other ceslestial objects and/or entities including objects lacking an atmosphere. 
 - The software is not certified for use at, below, or above the speed of sound, nor under or above water at any depth or elevation.
 - This software is not for the manufacture, use, storage, or distribution of any radioactive materials.
 - The software will not protect from nor is immune from the effects of ionizing, non-ionizing, or any other form of radiation.
